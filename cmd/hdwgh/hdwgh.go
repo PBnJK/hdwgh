@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 
-	"github.com/pbnjk/hdwgh/pkg/util"
+	"github.com/pbnjk/hdwgh/internal/article"
+
+	"github.com/pbnjk/hdwgh/pkg/backtracker"
 )
 
 func main() {
@@ -12,9 +14,11 @@ func main() {
 
 	flag.Parse()
 
-	if util.IsValidURL(*flagInput) {
-		fmt.Println("TODO")
+	initialArticle, err := article.New(*flagInput)
+	if err != nil {
+		log.Fatalf("An error occurred getting the initial article: %v", err)
 	}
 
-	fmt.Println("TODO")
+	bt := backtracker.New(initialArticle, backtracker.DefaultOptions())
+	bt.Backtrack()
 }
